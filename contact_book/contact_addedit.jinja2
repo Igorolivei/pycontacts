@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block title %}Contact Add/Edit{% endblock %}
+{% block head %}
+    {{ super() }}
+    <style type="text/css">
+        .important { color: #336699; }
+        .warning { color: #FF0000; size: '5px'; }
+    </style>
+{% endblock %}
+{% block content %}
+  <a href="{{ request.route_url('contact_book') }}">Contact Book</a>
+  <h2>Add/Edit Contact</h2>
+  
+  {% if contact is defined %}
+    <form action="/{{ contact.uid }}/edit">
+      <p>Name: <input type=text name="name" value="{{ contact.name }}"></p>
+      <p>Adress: <input type=text name="adress" value="{{ contact.adress }}"></p>
+      <p>E-mail: <input type=text name="email" value="{{ contact.email }}"></p>
+      <p>Phone: <input type=text name="phone" value="{{ contact.phone }}"><p class="warning">Format: (xx) xxxxx-xxxx</p></p>
+      <p>Birthday: <input type=date name="birthday" value="{{ contact.birthday }}"></p>
+      <input type=submit name="submit" value="Save">
+    </form>
+  {% else %}
+    <form action="/add">
+      <p>Name: <input type=text name="name"></p>
+      <p>Adress: <input type=text name="adress"></p>
+      <p>E-mail: <input type=text name="email"></p>
+      <p>Phone: <input type=text name="phone"><p class="warning">Format: (xx) xxxxx-xxxx</p></p>
+      <p>Birthday: <input type=date name="birthday"></p>
+      <input type=submit name="submit" value="Save">
+    </form>
+  {% endif %}
+{% endblock %}

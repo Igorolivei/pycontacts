@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <link rel="stylesheet" href="style.css" />
+    <title>{% block title %}{% endblock %} - Page</title>
+    {% endblock %}
+</head>
+<body>
+	<h1>{{ self.title() }}</h1>
+	<div>{% block content %}{% endblock %}</div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %}Contact Book{% endblock %}
+{% block content %}
+	<a href="{{ request.route_url('contact_add') }}">Add
+	    Contact</a>
+	<ul>
+		{% for contact in contacts %}
+	    <li>
+	        <a href="{{ request.route_url('contact_view', uid=contact.uid) }}">
+	                {{ contact.name }}
+	        </a>
+	    </li>
+	    {% endfor %}
+	</ul>
+{% endblock %}

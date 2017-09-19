@@ -1,0 +1,6 @@
+{% extends "layout.html" %}
+{% block title %}Contact Book{% endblock %}
+{% block content %}
+	<h3>{{ message }}</h3>
+	<a href="{{ request.route_url('contact_book') }}">Contact Book</a>
+{% endblock %}
