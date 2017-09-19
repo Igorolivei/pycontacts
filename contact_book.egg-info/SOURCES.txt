@@ -1,6 +1,0 @@
-contact_book.egg-info/PKG-INFO
-contact_book.egg-info/SOURCES.txt
-contact_book.egg-info/dependency_links.txt
-contact_book.egg-info/entry_points.txt
-contact_book.egg-info/requires.txt
-contact_book.egg-info/top_level.txt
