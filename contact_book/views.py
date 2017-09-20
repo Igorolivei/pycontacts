@@ -1,13 +1,7 @@
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
-
-#Contacts dictionary
-
-contacts = {
-    '1': dict(uid='1', name='Igor', adress='Pahkakuja 2, Kuopio, Finland', email='igor.bezerra96@gmail.com', phone='+5584999337801', birthday='1996-09-26'),
-    '2': dict(uid='2', name='Dave', adress='Av. Sen. Salgado Filho, Natal/RN, Brasil', email='dave.grohl@foofighters.com', phone='+5584988888888', birthday='1992-12-16'),
-    '3': dict(uid='3', name='Eric', adress='Springfield, EUA', email='eric.clapton@cream.com', phone='+5584912314142', birthday='1996-09-26')
-}
+from bson.json_util import loads, dumps, STRICT_JSON_OPTIONS
+from bson.objectid import ObjectId
 
 #Class contact book
 
@@ -15,13 +9,14 @@ class ContactBook(object):
     def __init__(self, request):
         self.request = request
 
+    #Function that list all contacts
     @view_config(route_name='contact_book', renderer='contact_book.jinja2')
     def contact_book(self):
-        return dict(contacts=contacts.values())
+        contact = self.request.db['contacts'].find()
+        return dict(contacts=contact)
 
     #Function to add new contact
-    @view_config(route_name='contact_add',
-                 renderer='contact_addedit.jinja2')
+    @view_config(route_name='contact_add', renderer='contact_addedit.jinja2')
     def contact_add(self):
 
         #Verify if it's a request to save a new contact, or to load the form
@@ -29,14 +24,26 @@ class ContactBook(object):
             
             params = self.request.params
 
-            last_uid = int(sorted(contacts.keys())[-1])
-            new_uid = str(last_uid + 1)
-            contacts[new_uid] = dict(uid=new_uid, 
-                                     name=params['name'], 
-                                     adress=params['adress'], 
-                                     email=params['email'], 
-                                     phone=params['phone'], 
-                                     birthday=params['birthday'])
+            new_uid = self.request.db['contacts'].insert_one(
+                {
+                    "name": params['name'],
+                    "birthday": params['birthday'],
+                    "adress": params['adress'],
+                    "city": params['city'],
+                    "state": params['state'],
+                    "country": params['country'],
+                    "emails": [
+                        {"emailAdress1": params['emailAdress1']},
+                        {"emailAdress2": params['emailAdress2']}, 
+                        {"emailAdress3": params['emailAdress3']}
+                    ], 
+                    "phones": [
+                        {"phoneIdentifier1": params['phoneIdentifier1'], "number1": params['number1']}, 
+                        {"phoneIdentifier2": params['phoneIdentifier2'], "number2": params['number2']}, 
+                        {"phoneIdentifier3": params['phoneIdentifier3'], "number3": params['number3']}
+                    ]
+                }
+            ).inserted_id
 
             # Redirect to view the new contact
             url = self.request.route_url('contact_view', uid=new_uid)
@@ -48,40 +55,61 @@ class ContactBook(object):
     @view_config(route_name='contact_view', renderer='contact_view.jinja2')
     def contact_view(self):
         uid = self.request.matchdict['uid']
-        contact = contacts[uid]
+        contact = self.request.db['contacts'].find_one({"_id":ObjectId(uid)})
         return dict(contact=contact)
 
     #Return contact's data to fill the form to edit, and handles new data of contact 
-    @view_config(route_name='contact_edit',
-                 renderer='contact_addedit.jinja2')
+    @view_config(route_name='contact_edit', renderer='contact_addedit.jinja2')
     def contact_edit(self):
         uid = self.request.matchdict['uid']
-        contact = contacts[uid]
+        contact = self.request.db['contacts'].find_one({"_id":ObjectId(uid)})
 
         #Verify if it's a request to save new data of contact, or to load the form to edit it
         if 'submit' in self.request.params:
             params = self.request.params
             
-            contacts[uid]['name'] = params['name']
-            contacts[uid]['adress'] = params['adress']
-            contacts[uid]['email'] = params['email']
-            contacts[uid]['phone'] = params['phone']
-            contacts[uid]['birthday'] = params['birthday']
-            url = self.request.route_url('contact_view',
-                                         uid=contact['uid'])
-            return HTTPFound(url)
+            result = self.request.db['contacts'].update_one({"_id": ObjectId(uid)},
+                { 
+                    "$set": { "name": params['name'],
+                              "birthday": params['birthday'],
+                              "adress": params['adress'],
+                              "city": params['city'],
+                              "state": params['state'],
+                              "country": params['country'],
+                              "emails": [
+                                  {"emailAdress1": params['emailAdress1']},
+                                  {"emailAdress2": params['emailAdress2']}, 
+                                  {"emailAdress3": params['emailAdress3']}
+                              ], 
+                              "phones": [
+                                  {"phoneIdentifier1": params['phoneIdentifier1'], "number1": params['number1']}, 
+                                  {"phoneIdentifier2": params['phoneIdentifier2'], "number2": params['number2']}, 
+                                  {"phoneIdentifier3": params['phoneIdentifier3'], "number3": params['number3']}
+                              ]
+                    }
+                }
+            ).matched_count
+            if result == 1:
+                url = self.request.route_url('contact_view',
+                                             uid=uid)
+                return HTTPFound(url)
+            else:
+                message="An error ocurred during updating"
+                return dict(message=message)
 
         return dict(contact=contact)
 
     #Delete contact from dictionary
-    @view_config(route_name='contact_delete',
-                 renderer='contact_delete.jinja2')
+    @view_config(route_name='contact_delete', renderer='contact_delete.jinja2')
     def contact_delete(self):
         uid = self.request.matchdict['uid']
-        del contacts[uid]
+        contact =  self.request.db['contacts'].remove({"_id":ObjectId(uid)})
         #Verify if the contact was really deleted from dictionary
-        if uid in contacts:
-            message = "An error ocurred"
-        else:
-            message = "Contact succesfully deleted"
+        message = "Contact succesfully deleted" if (self.request.db['contacts'].find_one({"_id":ObjectId(uid)}) is None) else "An error ocurred"
+
         return dict(message=message)
+
+    @view_config(route_name='test_mongo', renderer='json')
+    def test_mongo(self):
+        contacts = dumps(self.request.db['contacts'].find_one())
+        return {'contacts':contacts}

@@ -3,7 +3,7 @@ from setuptools import setup
 requires = [
     'pyramid',
     'pyramid_jinja2',
-    'deform'
+    'pymongo'
 ]
 
 setup(name='contact_book',

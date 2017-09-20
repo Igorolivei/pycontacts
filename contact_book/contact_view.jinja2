@@ -8,12 +8,18 @@
 {% endblock %}
 {% block content %}
 	<a href="{{ request.route_url('contact_book') }}">Back</a> |
-	<a href="{{ request.route_url('contact_edit', uid=contact.uid) }}">Edit</a> |
-	<a href="{{ request.route_url('contact_delete', uid=contact.uid) }}">Delete</a>
+	<a href="{{ request.route_url('contact_edit', uid=contact._id) }}">Edit</a> |
+	<a href="{{ request.route_url('contact_delete', uid=contact._id) }}">Delete</a>
 
 	<h2>{{ contact.name }}</h2>
-	<p>Adress: {{ contact.adress }}</p>
-	<p class="important">Phone number: {{ contact.phone }}</p>
-	<p>E-mail: {{ contact.email }}</p>	
+	<p>Adress: {{ contact.adress }}, {{ contact.city }}/{{ contact.state }}, {{ contact.country }}</p>
+	<p class="important"> Phone numbers: </p>
+	<p class="important" style="margin-left:2%"> {{ contact.phones[0].number1 }} {{ '('+contact.phones[0].phoneIdentifier1+')' }}</p>
+	<p class="important" style="margin-left:2%"> {{ contact.phones[1].number2 }} {{ '('+contact.phones[1].phoneIdentifier2+')' }}</p>
+	<p class="important" style="margin-left:2%"> {{ contact.phones[2].number3 }} {{ '('+contact.phones[2].phoneIdentifier3+')' }}</p>
+	<p> E-mail adresses: </p>
+	<p style="margin-left:2%"> {{ contact.emails[0].emailAdress1 }}</p>
+	<p style="margin-left:2%"> {{ contact.emails[1].emailAdress2 }}</p>
+	<p style="margin-left:2%"> {{ contact.emails[2].emailAdress3 }}</p>
 	<p>Birthday: {{ contact.birthday }}</p>
 {% endblock %}

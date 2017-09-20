@@ -4,7 +4,8 @@
     {{ super() }}
     <style type="text/css">
         .important { color: #336699; }
-        .warning { color: #FF0000; size: '5px'; }
+        .warning { color: #FF0000; size: '2%'; }
+        .multiple_fields { margin-left:'2%'; }
     </style>
 {% endblock %}
 {% block content %}
@@ -12,11 +13,20 @@
   <h2>Add/Edit Contact</h2>
   
   {% if contact is defined %}
-    <form action="/{{ contact.uid }}/edit">
+    <form action="/{{ contact._id }}/edit">
       <p>Name: <input type=text name="name" value="{{ contact.name }}"></p>
       <p>Adress: <input type=text name="adress" value="{{ contact.adress }}"></p>
-      <p>E-mail: <input type=text name="email" value="{{ contact.email }}"></p>
-      <p>Phone: <input type=text name="phone" value="{{ contact.phone }}"><p class="warning">Format: (xx) xxxxx-xxxx</p></p>
+      <p>City: <input type=text name="city" value="{{ contact.city }}"></p>
+      <p>State: <input type=text name="state" value="{{ contact.state }}"></p>
+      <p>Country: <input type=text name="country" value="{{ contact.country }}"></p>
+      <p>E-mail adresses:</p>
+      <input class="multiple_fields" type=text name="emailAdress1" value="{{ contact.emails[0].emailAdress1 }}"><br>
+      <input class="multiple_fields" type=text name="emailAdress2" value="{{ contact.emails[1].emailAdress2 }}"><br>
+      <input class="multiple_fields" type=text name="emailAdress3" value="{{ contact.emails[2].emailAdress3 }}"><br>
+      <p>Phone numbers <span class="warning">(Format: (xx) xxxxx-xxxx)</span>:</p>
+      <input class="multiple_fields" type=text name="number1" value="{{ contact.phones[0].number1 }}"> Contact type (e.g.: work, home): <input type=text name="phoneIdentifier1" value="{{ contact.phones[0].phoneIdentifier1 }}"><br>
+      <input class="multiple_fields" type=text name="number2" value="{{ contact.phones[1].number2 }}"> Contact type (e.g.: work, home): <input type=text name="phoneIdentifier2" value="{{ contact.phones[1].phoneIdentifier2 }}"><br>
+      <input class="multiple_fields" type=text name="number3" value="{{ contact.phones[2].number3 }}"> Contact type (e.g.: work, home): <input type=text name="phoneIdentifier3" value="{{ contact.phones[2].phoneIdentifier3 }}"><br>
       <p>Birthday: <input type=date name="birthday" value="{{ contact.birthday }}"></p>
       <input type=submit name="submit" value="Save">
     </form>
@@ -24,8 +34,17 @@
     <form action="/add">
       <p>Name: <input type=text name="name"></p>
       <p>Adress: <input type=text name="adress"></p>
-      <p>E-mail: <input type=text name="email"></p>
-      <p>Phone: <input type=text name="phone"><p class="warning">Format: (xx) xxxxx-xxxx</p></p>
+      <p>City: <input type=text name="city"></p>
+      <p>State: <input type=text name="state"></p>
+      <p>Country: <input type=text name="country"></p>
+      <p>E-mail adresses:</p>
+      <input class="multiple_fields" type=text name="emailAdress1"><br>
+      <input class="multiple_fields" type=text name="emailAdress2"><br>
+      <input class="multiple_fields" type=text name="emailAdress3"><br>
+      <p>Phone numbers <span class="warning">(Format: (xx) xxxxx-xxxx)</span>:</p>
+      <input class="multiple_fields" type=text name="number1"> Contact type (e.g.: work, home): <input type=text name="phoneIdentifier1"><br>
+      <input class="multiple_fields" type=text name="number2"> Contact type (e.g.: work, home): <input type=text name="phoneIdentifier2"><br>
+      <input class="multiple_fields" type=text name="number3"> Contact type (e.g.: work, home): <input type=text name="phoneIdentifier3"><br>
       <p>Birthday: <input type=date name="birthday"></p>
       <input type=submit name="submit" value="Save">
     </form>

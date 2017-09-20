@@ -6,7 +6,7 @@
 	<ul>
 		{% for contact in contacts %}
 	    <li>
-	        <a href="{{ request.route_url('contact_view', uid=contact.uid) }}">
+	        <a href="{{ request.route_url('contact_view', uid=contact._id) }}">
 	                {{ contact.name }}
 	        </a>
 	    </li>
