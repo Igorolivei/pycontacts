@@ -1,6 +1,6 @@
 PyContacts
 ==========
-PyContacts is a little project made with Python, Pyramid web framework and Jinja2.
+PyContacts is a little project made with Python, Pyramid web framework, MongoDB and Jinja2.
 
 Installing and Running (on Linux)
 ---------------------------------
@@ -12,3 +12,5 @@ Installing and Running (on Linux)
 - Initialize PyContacts using development.ini: $ $VENV/bin/pserve development.ini --reload
 
 * To run tests, execute: $VENV/bin/py.test contact_book/tests.py -q
+
+* Informations about how to create and use database and collections in the file mongo_structure.txt
