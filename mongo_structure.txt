@@ -1,0 +1,52 @@
+* contacts collection:
+{
+	_id: CONTACT_ID,
+	name: NAME_OF_CONTACT, 
+	birthday: BIRTHDAY_OF_CONTACT,
+	gender: GENDER_OF_CONTACT, //M - Male, F - Female
+	adress: ADRESS_OF_CONTACT,
+	city: CITY_OF_CONTACT,
+	state: STATE_OF_CONTACT,
+	country: COUNTRY_OF_CONTACT,
+	emails: [
+		{
+			emailAdress: EMAIL_ADRESS
+		}, 
+		{
+			emailAdress: EMAIL_ADRESS
+		}
+	]
+	phones: [
+		{
+			phoneIdentifier: IDENTIFIER_OF_NUMBER
+			number: PHONE_NUMBER
+		}, 
+		{
+			phoneIdentifier: IDENTIFIER_OF_NUMBER
+			number: PHONE_NUMBER
+		}
+	]
+}
+
+
+
+db.contacts.insert({name: "Igor", birthday: "1996-09-26", gender: "M", adress: "Pahkakuja 2 E 21", city: "Kuopio", 
+	state: "Pohjois Savo", country: "Finland", emails: [{emailAdress1: "igor.bezerra96@gmail.com"},{emailAdress2: "igor.flame.n@hotmail.com"}, {emailAdress3: ""}], phones: [{phoneIdentifier1: "Finnish phone", number1: "+3580414955433"}, {phoneIdentifier2: "Brazilian phone", number2: "+5584999337801"}, {phoneIdentifier3: "", number3: ""}]
+})
+
+db.contacts.insert({name: "Eric", birthday: "1966-10-21", gender: "M", adress: "Homer's street", city: "Springfield", 
+	state: "Springfield", country: "EUA", emails: [{emailAdress1: "eric.clapton@cream.com"}, {emailAdress2: ""}, {emailAdress3: ""}], phones: [{phoneIdentifier1: "Shows phone", number1: "+5584999999999"}, {phoneIdentifier2: "", number2: ""}, {phoneIdentifier3: "", number3: ""}]
+})
+
+db.contacts.insert({name: "Dave", birthday: "1974-02-11", gender: "M", adress: "Av Sen Salgado Filho, Lagoa nova", city: "Natal",
+	state: "RN", country: "Brazil", emails: [{emailAdress1: "dave.grohl@foofighters.com"}, {emailAdress2: ""}, {emailAdress3: ""}],
+	phones: [{phoneIdentifier1: "Shows phone", number1: "+5584888888888"}, {phoneIdentifier2: "", number2: ""}, {phoneIdentifier3: "", number3: ""}]
+})
+
+
+*** TO RUN ***
+sudo mongod --dbpath /var/lib/mongodb/data 
+
+$ mongo
+$ use pycontacts #create database
+$ db.createCollection("contacts")
