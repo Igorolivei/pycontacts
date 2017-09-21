@@ -18,8 +18,8 @@
 	<p class="important" style="margin-left:2%"> {{ contact.phones[1].number2 }} {{ '('+contact.phones[1].phoneIdentifier2+')' }}</p>
 	<p class="important" style="margin-left:2%"> {{ contact.phones[2].number3 }} {{ '('+contact.phones[2].phoneIdentifier3+')' }}</p>
 	<p> E-mail adresses: </p>
-	<p style="margin-left:2%"> {{ contact.emails[0].emailAdress1 }}</p>
-	<p style="margin-left:2%"> {{ contact.emails[1].emailAdress2 }}</p>
-	<p style="margin-left:2%"> {{ contact.emails[2].emailAdress3 }}</p>
+	<p style="margin-left:2%"> {{ contact.emails[0].emailAdress1 }} {#<a href="/email/{{ contact._id }}/{{ contact.emails[0].emailAdress1 }}">Send email</a></p>#}
+	<p style="margin-left:2%"> {{ contact.emails[1].emailAdress2 }} {#<a href="/email/{{ contact._id }}/{{ contact.emails[1].emailAdress2 }}">Send email</a></p>#}
+	<p style="margin-left:2%"> {{ contact.emails[2].emailAdress3 }} {#<a href="/email/{{ contact._id }}/{{ contact.emails[2].emailAdress3 }}">Send email</a></p>#}
 	<p>Birthday: {{ contact.birthday }}</p>
 {% endblock %}

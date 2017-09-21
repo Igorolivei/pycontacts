@@ -1,15 +1,29 @@
 {% extends "layout.html" %}
+{% block head %}
+    {{ super() }}
+	<script type="text/javascript">
+		function search(e) {
+		    if (e.keyCode == 13) {
+		        search = document.getElementById("search").value;
+		        if (search != "") {
+			        window.location.href = "/search/"+search;
+			        return false;
+		        }
+	        	alert("Type any value before search.");
+		    }
+		}
+	</script>
+{% endblock %}
 {% block title %}Contact Book{% endblock %}
 {% block content %}
-	<a href="{{ request.route_url('contact_add') }}">Add
-	    Contact</a>
+	<a href="{{ request.route_url('contact_add') }}">Add Contact</a>
+	<p>Order contacts by: <a href="/order/name">Name</a> | <a href="/order/city">City</a><br>
+	<input type=text id="search" name="search" placeholder="Type your search" onkeypress="return search(event)"></p>
 	<ul>
-		{% for contact in contacts %}
+	{% for contact in contacts %}
 	    <li>
-	        <a href="{{ request.route_url('contact_view', uid=contact._id) }}">
-	                {{ contact.name }}
-	        </a>
+	        <a href="{{ request.route_url('contact_view', uid=contact._id) }}">{{ contact.name }}</a>
 	    </li>
-	    {% endfor %}
+    {% endfor %}
 	</ul>
 {% endblock %}

@@ -22,10 +22,13 @@ def main(global_config, **settings):
 
 	config.include('pyramid_jinja2')
 	config.add_route('contact_book', '/')
+	config.add_route('contact_book_ordered', '/order/{order}')
 	config.add_route('contact_add', '/add')
 	config.add_route('contact_view', '/{uid}')
 	config.add_route('contact_edit', '/{uid}/edit')
 	config.add_route('contact_delete', '/{uid}/delete')
+	config.add_route('email', '/email/{uid}/{email}')
+	config.add_route('search', '/search/{search}')
 	config.add_route('test_mongo', '/test_mongo/mongo.json')
 
 	config.scan('.views')
